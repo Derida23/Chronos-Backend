@@ -10,11 +10,12 @@ export enum TaskLabel {
   High = 3,
 }
 
+import { sql } from 'drizzle-orm';
 // src/database/schema.ts
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 
 export const users = sqliteTable('users', {
-  id: integer('id').primaryKey().notNull().unique(),
+  id: text('id').primaryKey().notNull().unique(),
   name: text('name', { length: 100 }).notNull(),
   email: text('email', { length: 255 }).unique().notNull(),
   password: text('password', { length: 255 }).notNull(),
@@ -22,29 +23,27 @@ export const users = sqliteTable('users', {
     .notNull()
     .default('user'),
   is_active: integer('is_active', { mode: 'boolean' }).default(true),
-  created_at: text('created_at')
-    .notNull()
-    .$defaultFn(() => new Date().toISOString()),
+  created_at: text('created_at').default(sql`(CURRENT_TIMESTAMP)`),
   updated_at: text('updated_at')
     .notNull()
-    .$defaultFn(() => new Date().toISOString()),
-  deleted_at: text('deleted_at').default(null).$type<Date | null>(),
+    .default(sql`(CURRENT_TIMESTAMP)`)
+    .$onUpdate(() => sql`(CURRENT_TIMESTAMP)`),
+  deleted_at: text('deleted_at').default(null),
 });
 
 export const categories = sqliteTable('categories', {
-  id: integer('id').primaryKey().notNull().unique(),
+  id: text('id').primaryKey().notNull().unique(),
   name: text('name').unique().notNull(),
-  created_at: text('created_at')
-    .notNull()
-    .$defaultFn(() => new Date().toISOString()),
+  created_at: text('created_at').default(sql`(CURRENT_TIMESTAMP)`),
   updated_at: text('updated_at')
     .notNull()
-    .$defaultFn(() => new Date().toISOString()),
-  deleted_at: text('deleted_at').default(null).$type<Date | null>(),
+    .default(sql`(CURRENT_TIMESTAMP)`)
+    .$onUpdate(() => sql`(CURRENT_TIMESTAMP)`),
+  deleted_at: text('deleted_at').default(null),
 });
 
 export const tasks = sqliteTable('tasks', {
-  id: integer('id').primaryKey().notNull().unique(),
+  id: text('id').primaryKey().notNull().unique(),
   title: text('title').notNull(),
   description: text('description'),
   user_id: integer('user_id').references(() => users.id, {
@@ -56,11 +55,10 @@ export const tasks = sqliteTable('tasks', {
   status: integer('status').$type<1 | 2 | 3>().notNull().default(1),
   label: integer('label').$type<1 | 2 | 3>().notNull().default(2),
   due_date: integer('due_date', { mode: 'timestamp' }).default(null),
-  created_at: text('created_at')
-    .notNull()
-    .$defaultFn(() => new Date().toISOString()),
+  created_at: text('created_at').default(sql`(CURRENT_TIMESTAMP)`),
   updated_at: text('updated_at')
     .notNull()
-    .$defaultFn(() => new Date().toISOString()),
-  deleted_at: text('deleted_at').default(null).$type<Date | null>(),
+    .default(sql`(CURRENT_TIMESTAMP)`)
+    .$onUpdate(() => sql`(CURRENT_TIMESTAMP)`),
+  deleted_at: text('deleted_at').default(null),
 });
