@@ -17,7 +17,7 @@ import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 export const users = sqliteTable('users', {
   id: text('id').primaryKey().notNull().unique(),
   name: text('name', { length: 100 }).notNull(),
-  email: text('email', { length: 255 }).unique().notNull(),
+  email: text('email', { length: 255 }).notNull(),
   password: text('password', { length: 255 }).notNull(),
   role: text('role', { enum: ['admin', 'user'] })
     .notNull()
@@ -28,18 +28,18 @@ export const users = sqliteTable('users', {
     .notNull()
     .default(sql`(CURRENT_TIMESTAMP)`)
     .$onUpdate(() => sql`(CURRENT_TIMESTAMP)`),
-  deleted_at: text('deleted_at').default(null),
+  deleted_at: text('deleted_at'),
 });
 
 export const categories = sqliteTable('categories', {
   id: text('id').primaryKey().notNull().unique(),
-  name: text('name').unique().notNull(),
+  name: text('name').notNull(),
   created_at: text('created_at').default(sql`(CURRENT_TIMESTAMP)`),
   updated_at: text('updated_at')
     .notNull()
     .default(sql`(CURRENT_TIMESTAMP)`)
     .$onUpdate(() => sql`(CURRENT_TIMESTAMP)`),
-  deleted_at: text('deleted_at').default(null),
+  deleted_at: text('deleted_at'),
 });
 
 export const tasks = sqliteTable('tasks', {
@@ -60,5 +60,5 @@ export const tasks = sqliteTable('tasks', {
     .notNull()
     .default(sql`(CURRENT_TIMESTAMP)`)
     .$onUpdate(() => sql`(CURRENT_TIMESTAMP)`),
-  deleted_at: text('deleted_at').default(null),
+  deleted_at: text('deleted_at'),
 });
