@@ -32,7 +32,7 @@ export class CategoryService {
       .values(payload)
       .returning();
 
-    return buildResponse('Categories created successfully', newCategories);
+    return buildResponse('Category created successfully', newCategories);
   }
 
   async findAll(filters: Filters, pagination: Paginations) {
@@ -94,7 +94,7 @@ export class CategoryService {
       .where(and(eq(categories.id, id), isNull(categories.deleted_at)))
       .returning();
 
-    return buildResponse('Categories updated successfully', updateCategories);
+    return buildResponse('Category updated successfully', updateCategories);
   }
 
   async remove(id: string) {
@@ -110,7 +110,7 @@ export class CategoryService {
       .where(eq(categories.id, id))
       .returning();
 
-    return buildResponse('Categories deleted successfully', removeCategories);
+    return buildResponse('Category deleted successfully', removeCategories);
   }
 
   async checkName(name: string) {
