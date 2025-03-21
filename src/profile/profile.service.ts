@@ -13,6 +13,7 @@ import { Filters, Paginations } from 'types/filter.type';
 import { v7 as uuidv7 } from 'uuid';
 import { hashPassword } from 'common/hash';
 import { generateDate } from 'common/datetime';
+import { RequestUser } from 'types/request.type';
 
 @Injectable()
 export class ProfileService {
@@ -81,8 +82,8 @@ export class ProfileService {
     return buildResponse('User found', getProfile);
   }
 
-  async findMe(req: { user: { id: string } }) {
-    const id: string = req.user.id;
+  async findMe(user: RequestUser) {
+    const id: string = user.id;
 
     const [getMe] = await db
       .select()

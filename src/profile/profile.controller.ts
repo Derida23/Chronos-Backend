@@ -7,7 +7,6 @@ import {
   Param,
   Delete,
   UseGuards,
-  Req,
   Query,
 } from '@nestjs/common';
 import { ProfileService } from './profile.service';
@@ -15,6 +14,8 @@ import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { JwtAuthGuard } from 'src/guard/jwt-auth.guard';
 import { RolesGuard } from 'src/guard/role.guard';
+import { RequestUser } from 'types/request.type';
+import { RequestUser as Req } from 'decorator/request-user.decorator';
 
 @Controller('profile')
 export class ProfileController {
@@ -43,8 +44,9 @@ export class ProfileController {
 
   @UseGuards(JwtAuthGuard)
   @Get('/me')
-  findMe(@Req() req: any) {
-    return this.profileService.findMe(req);
+  findMe(@Req() user: RequestUser) {
+    console.log(user);
+    return this.profileService.findMe(user);
   }
 
   @UseGuards(JwtAuthGuard, new RolesGuard('admin'))
