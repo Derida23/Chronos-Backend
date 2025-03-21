@@ -45,7 +45,6 @@ export class ProfileController {
   @UseGuards(JwtAuthGuard)
   @Get('/me')
   findMe(@Req() user: RequestUser) {
-    console.log(user);
     return this.profileService.findMe(user);
   }
 
